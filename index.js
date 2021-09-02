@@ -1,4 +1,4 @@
-// Instancias de servidor y BD
+// Instancias de servidor y BD.
 require('dotenv').config()
 
 const server = require('./src/server')
