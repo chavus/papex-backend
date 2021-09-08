@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+
 // Schema
 const orderSchema = new mongoose.Schema({
     parentOrder: {
@@ -25,10 +26,15 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     }, 
-    products: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'products'
-    }]              
+    products:     
+    [
+        {
+            product :{ type: mongoose.Schema.Types.ObjectId, ref: 'products', required: true },
+            price : { type: Number, required: true },
+            qty : { type: Number, required: true }
+        }   
+    ]
+    
 }
 , {timestamps: true} )   
 

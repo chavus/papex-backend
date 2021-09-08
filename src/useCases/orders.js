@@ -2,12 +2,12 @@ const Order = require ('../models/orders')
 
 function getAll()
 {
-    return Order.find()   
+    return Order.find().populate("business").populate("client").populate("products.product")     
 }
 
 function getById(id)
 {
-    return Order.findOne(id)
+    return Order.findById(id).populate("business").populate("client").populate("products.product")  
 }
 
 function deleteById(id)

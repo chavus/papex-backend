@@ -14,10 +14,9 @@ function getNearBusiness(id)
     // evaluar si esta a menos o igual a 2 kms (2000 mts) 
     // devuelvo un array de usuarios tipo negocio que cumplan con el criterio
     // como ? quien sabe
-    return  
+    return  1
 
 }
-
 
 function getById(id)
 {
@@ -42,7 +41,7 @@ function updateById(id, newData)
 module.exports = {
 
     getAll, 
-     getNearBusiness(),
+    getNearBusiness,
     getById,
     deleteById,
     create,

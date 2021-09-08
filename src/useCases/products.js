@@ -2,12 +2,12 @@ const Product = require ('../models/products')
 
 function getAll()
 {
-    return Product.find() //.populate({ path: 'business', model: 'users' })    
+    return Product.find().populate("business")   
 }
 
 function getById(id)
 {
-    return Product.findById(id) //.populate("business")
+    return Product.findById(id).populate("business")   
 }
 
 function deleteById(id)

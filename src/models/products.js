@@ -1,10 +1,12 @@
 const mongoose = require('mongoose')
 
+
 // Schema
 const productSchema = new mongoose.Schema({
     business: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'users',
+        required: true
        
     },
     name: {
