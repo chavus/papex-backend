@@ -38,5 +38,10 @@ const orderSchema = new mongoose.Schema({
 }
 , {timestamps: true} )   
 
+orderSchema.statics.getNextOrder = async function(){
+    const res = await this.find().sort('-parentOrder').limit(1)
+    return res[0].parentOrder + 1 
+}
+
 const model = mongoose.model('orders', orderSchema )
 module.exports = model
