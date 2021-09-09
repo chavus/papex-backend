@@ -1,4 +1,5 @@
 const User = require ('../models/users')
+const bcrypt = require('../lib/bcrypt')
 
 function getAll()
 {
@@ -28,9 +29,16 @@ function deleteById(id)
     return User.findByIdAndDelete(id)
 }
 
-function create(user)
+async function create(user)
 {
-    return User.create(user)
+    //Validate if user exists
+    const userFound = await User.findOne({ email: user.email })
+    if (userFound) throw new Error("Usuario con ese correo ya existe.")
+
+    //Encrypt password
+    const encryptedPassword = await bcrypt.hash(user.password)
+
+    return User.create({...user, password: encryptedPassword})
 }
 
 function updateById(id, newData)

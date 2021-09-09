@@ -1,5 +1,6 @@
 const Order = require ('../models/orders')
 
+
 function getAll()
 {
     return Order.find().populate("business").populate("client").populate("products.product")     
@@ -17,7 +18,11 @@ function deleteById(id)
 
 function create(order)
 {
-    return Order.create(order)
+    // confirmation_code format: 
+        //date[last six] + "papex" + parentorder
+    const confirmation_code = `${Date.now().toString().slice(-5)}PAPEX${order.parentOrder}`
+    return Order.create({...order,
+        confirmation_code})
 }
 
 function updateById(id, newData)

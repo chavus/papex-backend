@@ -1,5 +1,6 @@
 // definición del servidor
 const express = require('express')
+const authRouter = require('./routers/auth')
 const ordersRouter = require('./routers/orders')
 const productsRouter = require('./routers/products')
 const usersRouter = require('./routers/users')
@@ -19,7 +20,8 @@ server.use((request, response, next) => {
     //console.log('RequestMethod: ', request.method, ' RequestPath: ', request.path, ' RequestBody: ', request.body)
     next()
   })
-  
+
+server.use('/auth', authRouter)
 server.use('/products', productsRouter)
 server.use('/users', usersRouter)
 server.use('/orders', ordersRouter)

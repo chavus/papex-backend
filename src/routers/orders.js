@@ -1,8 +1,10 @@
 // agregar queryparams para filtrar nombre producto
-
 const express = require('express')
+const isAuth = require("../middlewares/auth")
 const orders = require('../useCases/orders')
 const router = express.Router()
+
+router.use(isAuth)
 
 router.get('/', async (request, response) => {
   try {
