@@ -7,6 +7,7 @@ const router = express.Router()
 router.get('/', async (request, response) => {
   try {
 
+    
     const ordenes = await orders.getAll()
     response.json( {
             success: true,

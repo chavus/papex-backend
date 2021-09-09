@@ -8,7 +8,7 @@ router.get('/',  (request, response) => {
 
 
         console.log('hola')
-    /*
+   /*  
   try {    
     const ordenSiguiente =  ordercounter.getNextOrder()
     response.json( {
