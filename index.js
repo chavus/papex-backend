@@ -2,9 +2,9 @@
 require('dotenv').config()
 
 const server = require('./src/server')
-const dbConnect = require('./src/lib/db')
+const db = require('./src/lib/db')
 
-dbConnect()
+db.connect()
     .then(()=>{
         console.log("DB connected");
         server.listen(8080, ()=>{

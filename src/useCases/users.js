@@ -1,22 +1,29 @@
 const User = require ('../models/users')
 const bcrypt = require('../lib/bcrypt')
-
+const getDistance = require('../lib/distMatrixApi')
 function getAll()
 {
     return User.find()   
 }
 
-// regresa los negocios que se encuentran a menos de 2 kms del usuario
-// recibe como parametro el id del usuario tipo cliente  cliente 
-function getNearBusiness(id)      
+async function getNearBusiness(id)      
 {    
-    // traerte todos los negocios
-    // sacar distancias vs la api de google
-    // evaluar si esta a menos o igual a 2 kms (2000 mts) 
-    // devuelvo un array de usuarios tipo negocio que cumplan con el criterio
-    // como ? quien sabe
-    return  1
-
+    const origin= "Volcán Maunaloa 2826, Colli Urbano, 45070 Zapopan, Jal., Mexico"
+    //1.-Get direction from user-Client, from userInfo state
+    const client = await getById(id)
+    const clientAddress = client.address
+    //2.- Filtro de negocios getaAllBusinesses() -> [{business}]
+    //3.- Map para que regrese puras direcciones [direcciones]
+    const allBusinesses = await getAllBusinesses()
+    const businessesAddresses = allBusinesses.map( business => business.address)
+    // console.log(businessesAddresses)
+    //4.- getDistance() -> [{idx:, dist:}] 
+    const distArray = await getDistance(clientAddress, businessesAddresses)
+    //5.- [{business_obj + dist_info}] -> filter only dist specified 
+    const extendedBusinesses = allBusinesses.map( (business, idx)=>{
+        return {...business.toObject(), ...distArray[idx]}
+    })
+    return extendedBusinesses
 }
 
 function getById(id)
@@ -46,6 +53,9 @@ function updateById(id, newData)
     return User.findByIdAndUpdate(id,newData, { new: true , runValidators : true})
 }
 
+function getAllBusinesses(){
+    return User.find({ rol:"Negocio" })
+}
 module.exports = {
 
     getAll, 
@@ -53,6 +63,6 @@ module.exports = {
     getById,
     deleteById,
     create,
-    updateById
+    updateById,
+    getAllBusinesses
 }
-
