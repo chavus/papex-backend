@@ -11,4 +11,8 @@ function connect () {
     return mongoose.connect(URL, {useNewUrlParser: true, useUnifiedTopology:true})
 }
 
-module.exports = connect
+function close(){
+    return mongoose.connection.close()
+}
+
+module.exports = {connect, close, connection: mongoose.connection }
