@@ -41,21 +41,68 @@ async function getNextOrder()
 
 }
 
-/*
-function createMultipleOrders (   )   ///  {}
+
+async function createMultipleOrders (shoppingcart)   ///  {}
 {
+        /*
+       shoppingcart = [   
+        {   product : "a",
+            business :  "n2", 
+            price : 5.50, 
+            qty : 1 , 
+            client: "1"
+        }   ]  
+        */  
+        let idParentOrder = await getNextOrder()
 
-        ordenPadre = getNextOrder()
+        // 1.- saco todos los negocios sin importar que se repitan
+        let  business = shoppingcart.map ( item => item.business  ) 
 
-        carrito.foreach (  orden => {
+        // 2.- filtro  negocios para que sean unicos 
+        let uniqueBusinesses = []
+        business.forEach ( item => {  
+                    return !uniqueBusinesses.includes(item) ? uniqueBusinesses.push(item) : null
+        } )
+        // los ordeno
+        uniqueBusinesses.sort()
 
-                    create(orden)   /// agregar la orden padre 
+        // 3.-  saco los productos que vende cada negocio
 
-        }   )
+        let orderPerBusiness =  uniqueBusinesses.map (  (business, index) => {                   
+        let order = {}
+        
+        return  order = {   "business" : business  , 
+                            "client"   : shoppingcart[index].client, 
+                            "status"   : "En proceso", 
+                            "parentOrder" : idParentOrder,
+                            "products" : shoppingcart.filter (   (itemCart)  => { 
+                                                                        let itemCartFiltered = {}
+                                                                        
+                                                                        if (itemCart.business == business)
+                                                                        {
+                                                                            let { product , qty, price } = itemCart
+                                                                            itemCartFiltered = { "product" : product, "price" : price, "qty" : qty }
+                                                                            //console.log (itemCartFiltered)
+                                                                            return itemCartFiltered
+                                                                        }
+                                                                    }
+
+                                                                
+                                                                ) 
+                        
+
+                            }})
+
+        //console.log (orderPerBusiness)
+
+        for ( const order of orderPerBusiness )
+        {
+             await create(order)
+        }
 
 
 }
-*/
+
 
 
 module.exports = {
@@ -64,6 +111,7 @@ module.exports = {
     deleteById,
     create,
     updateById,
-    getNextOrder
+    getNextOrder,
+    createMultipleOrders
 }
 

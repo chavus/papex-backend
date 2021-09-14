@@ -4,7 +4,7 @@ const isAuth = require("../middlewares/auth")
 const orders = require('../useCases/orders')
 const router = express.Router()
 
-router.use(isAuth)
+//router.use(isAuth)
 
 router.get('/', async (request, response) => {
   try {
@@ -75,6 +75,30 @@ router.post('/', async (request, response) => {
       })
     }
   })
+
+
+router.post('/multipleorders', async (request, response) => {
+  try {
+    const shoppingcart = request.body
+    console.log(shoppingcart.data)
+    const ordenesCreadas = await orders.createMultipleOrders(shoppingcart.data)  
+
+      response.json({
+      success: true,
+      message: 'Ordenes multiples creadas',
+      data: ordenesCreadas
+    })
+  } 
+  catch (error) {
+      response.status(400)
+      response.json({
+      success: false,
+      message: 'Error al crear multiples ordenes ',
+      data: error.message
+    })
+  }
+})
+
   
 
   router.delete('/:id', async (request, response) => {
