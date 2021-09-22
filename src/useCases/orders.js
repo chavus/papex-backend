@@ -50,14 +50,15 @@ async function createMultipleOrders (shoppingcart)   ///  {}
             business :  "n2", 
             price : 5.50, 
             qty : 1 , 
-            client: "1"
+            client: "1",
+            deliveryMethod: "Delivery/Pickup"
         }   ]  
         */  
         let idParentOrder = await getNextOrder()
 
         // 1.- saco todos los negocios sin importar que se repitan
         let  business = shoppingcart.map ( item => item.business  ) 
-
+ 
         // 2.- filtro  negocios para que sean unicos 
         let uniqueBusinesses = []
         business.forEach ( item => {  
@@ -88,7 +89,8 @@ async function createMultipleOrders (shoppingcart)   ///  {}
                                                                     }
 
                                                                 
-                                                                ) 
+                                                                ) ,
+                            "deliveryMethod" : shoppingcart[index].deliveryMethod                                                                                                               
                         
 
                             }})

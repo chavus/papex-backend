@@ -33,7 +33,14 @@ const orderSchema = new mongoose.Schema({
             price : { type: Number, required: true },
             qty : { type: Number, required: true }
         }   
-    ]
+    ],
+    deliveryMethod:{
+        type: String,
+        enum:['Pickup', 'Delivery'],
+        required: true,
+        trim: true        
+    }
+
     
 }
 , {timestamps: true} )   
