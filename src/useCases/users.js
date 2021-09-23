@@ -6,24 +6,28 @@ function getAll()
     return User.find()   
 }
 
-async function getNearBusiness(id)      
+async function getNearBusiness(by, data, radius)      
 {    
-    const origin= "Volcán Maunaloa 2826, Colli Urbano, 45070 Zapopan, Jal., Mexico"
-    //1.-Get direction from user-Client, from userInfo state
-    const client = await getById(id)
-    const clientAddress = client.address
+    let clientOrigin = ""
+    if (by == "userId"){
+        // 1.-Get direction from user-Client, from userInfo state
+        const client = await getById(data)
+        clientOrigin = client.address
+    } else if (by == "userCoord"){
+        clientOrigin = data
+    }
     //2.- Filtro de negocios getaAllBusinesses() -> [{business}]
     //3.- Map para que regrese puras direcciones [direcciones]
     const allBusinesses = await getAllBusinesses()
     const businessesAddresses = allBusinesses.map( business => business.address)
-    // console.log(businessesAddresses)
     //4.- getDistance() -> [{idx:, dist:}] 
-    const distArray = await getDistance(clientAddress, businessesAddresses)
+    const distArray = await getDistance(clientOrigin, businessesAddresses)
     //5.- [{business_obj + dist_info}] -> filter only dist specified 
     const extendedBusinesses = allBusinesses.map( (business, idx)=>{
         return {...business.toObject(), ...distArray[idx]}
     })
-    return extendedBusinesses
+    const nearBusinesses = extendedBusinesses.filter( business => business.dist <= radius*1000)
+    return nearBusinesses
 }
 
 function getById(id)

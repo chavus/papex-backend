@@ -23,6 +23,30 @@ router.get('/', async (request, response) => { // Need to add isAuth
     }
 })
 
+router.get('/getNearBusinesses', async (request, response)=>{
+  //by=userId
+  //by=UserCoords
+
+  try {
+    const { by, byData, radius } = request.query //&radius=2, by=[id, coords]
+    const usuarios = await users.getNearBusiness(by, byData, radius)
+    response.json( {
+            success: true,
+            message : 'Obtener todos los negocios cercanos al cliente here',
+            data : usuarios
+        })
+
+    } 
+    catch (error) {
+            response.status(400)
+            response.json({
+            success: false,
+            message: 'Error al obtener todos los negocios',
+            data: error.message
+            })
+    }
+})
+
 router.get('/:id', isAuth, async (request, response) => {
     try {
   
@@ -114,25 +138,26 @@ router.get('/:id', isAuth, async (request, response) => {
     }
   })
 
-  router.get('/:id/getNearBusinesses', async (request, response) => { // Need to add isAuth
-    try {
-      const { id } = request.params
-      const usuarios = await users.getNearBusiness(id)
-      response.json( {
-              success: true,
-              message : 'Obtener todos los negocios cercanos al cliente',
-              data : usuarios
-          })
+  // router.get('/:id/getNearBusinesses', async (request, response) => { // Need to add isAuth
+  //   try {
+  //     const { id } = request.params
+  //     const { radius } = request.query //&radius=2 (kms)
+  //     const usuarios = await users.getNearBusiness(id, radius)
+  //     response.json( {
+  //             success: true,
+  //             message : 'Obtener todos los negocios cercanos al cliente',
+  //             data : usuarios
+  //         })
   
-      } 
-      catch (error) {
-              response.status(400)
-              response.json({
-              success: false,
-              message: 'Error al obtener todos los negocios',
-              data: error.message
-              })
-      }
-  })
+  //     } 
+  //     catch (error) {
+  //             response.status(400)
+  //             response.json({
+  //             success: false,
+  //             message: 'Error al obtener todos los negocios',
+  //             data: error.message
+  //             })
+  //     }
+  // })
 
   module.exports = router
