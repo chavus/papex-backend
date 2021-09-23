@@ -4,32 +4,24 @@ const isAuth = require("../middlewares/auth")
 const products = require('../useCases/products')
 const router = express.Router()
 
-router.use(isAuth)
+// router.use(isAuth)
 
 router.get('/', async (request, response) => {
   try {
 
-    //const  filters  = {}     
-    /*   Filtros de query params para refinar la busqueda
+    const  filters  = {}     
+      //  Filtros de query params para refinar la busqueda
 
-    const { businessId, name, category }  = request.query
+    const { businessId, searchText }  = request.query
   
-    if (name) filters.name = name  
+    if (businessId) filters.business = businessId
+    if (searchText) filters.name = {$regex:searchText , $options: 'i'}
 
-    if (age) 
-    {        
-        if ( is_min_age === "true" )         /// JSON.parse(is_min_age) 
-        {
-            filters.age =  { $gte: parseInt(age) }
-        }
-        else 
-        {
-            filters.age =  parseInt(age)
-        }
-    }    
-    */
+    console.log(filters)
 
-    const productos = await products.getAll()
+    const productos = await products.getAll(filters)
+    // const productos = await products.getAllByName("colores")
+
     response.json( {
             success: true,
             message : 'Gell all products',
@@ -140,4 +132,6 @@ router.post('/', async (request, response) => {
     }
   })
   
+
+
   module.exports = router

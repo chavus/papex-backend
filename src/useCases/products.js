@@ -1,8 +1,13 @@
 const Product = require ('../models/products')
 
-function getAll()
+function getAll(filter)
+{    
+    return Product.find(filter).populate("business")   
+}
+
+function  getAllByName(name)
 {
-    return Product.find().populate("business")   
+    return Product.find( {name: {$regex:name , $options: 'i'}   })
 }
 
 function getById(id)
@@ -25,11 +30,17 @@ function updateById(id, newData)
     return Product.findByIdAndUpdate(id,newData, { new: true , runValidators : true})
 }
 
+// function getByBusinessId(id){
+//     return Product.find({"business":id}).populate("business")
+// }
+
 module.exports = {
     getAll, 
     getById,
     deleteById,
     create,
-    updateById
+    updateById,
+    getAllByName
+    // getByBusinessId
 }
 

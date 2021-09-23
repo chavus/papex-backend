@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
- const daySchedule = new mongoose.Schema( { day: 'string' , openTime: 'string'  ,  closeTime: 'string' } )
+ const daySchedule = new mongoose.Schema( { day: 'string' , 
+                                            openTime: 'string'  ,  
+                                            closeTime: 'string' } )
 
 // Schema
 const userSchema = new mongoose.Schema({
@@ -61,7 +63,6 @@ const userSchema = new mongoose.Schema({
         type: daySchedule
     } ]
     ,
-     
     deliveryMethod: [ {
         type: String,
         minLength: 2,
