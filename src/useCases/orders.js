@@ -44,6 +44,8 @@ async function getNextOrder()
 
 async function createMultipleOrders (shoppingcart)   ///  {}
 {
+
+        const DELIVERY_COST = 35 
         /*
        shoppingcart = [   
         {   product : "a",
@@ -72,37 +74,40 @@ async function createMultipleOrders (shoppingcart)   ///  {}
         let orderPerBusiness =  uniqueBusinesses.map (  (business, index) => {                   
         let order = {}
         
+        const productsArray = shoppingcart.filter (   (itemCart)  => { 
+            let itemCartFiltered = {}
+            
+            if (itemCart.business == business)
+            {
+                let { product , qty, price } = itemCart
+                itemCartFiltered = { "product" : product, "price" : price, "qty" : qty }
+                //console.log (itemCartFiltered)
+                return itemCartFiltered
+            }
+        })
+
+        const total = productsArray.reduce((accum, current)=>{
+            return accum + current.price*current.qty 
+        },0)
+
         return  order = {   "business" : business  , 
                             "client"   : shoppingcart[index].client, 
                             "status"   : "En proceso", 
                             "parentOrder" : idParentOrder,
-                            "products" : shoppingcart.filter (   (itemCart)  => { 
-                                                                        let itemCartFiltered = {}
-                                                                        
-                                                                        if (itemCart.business == business)
-                                                                        {
-                                                                            let { product , qty, price } = itemCart
-                                                                            itemCartFiltered = { "product" : product, "price" : price, "qty" : qty }
-                                                                            //console.log (itemCartFiltered)
-                                                                            return itemCartFiltered
-                                                                        }
-                                                                    }
-
-                                                                
-                                                                ) ,
-                            "deliveryMethod" : shoppingcart[index].deliveryMethod                                                                                                               
-                        
-
+                            "products" :  productsArray,
+                            "deliveryMethod" : shoppingcart[index].deliveryMethod,                                                                              "deliveryCost": shoppingcart[index].deliveryMethod == "Delivery" ? DELIVERY_COST : 0,        
+                            "total": shoppingcart[index].deliveryMethod == "Delivery" ? total + DELIVERY_COST : total
                             }})
 
         //console.log (orderPerBusiness)
-
+        let createdOrders = []
         for ( const order of orderPerBusiness )
         {
-             await create(order)
+             const res = await create(order)
+             console.log(res)
+             createdOrders.push(res)
         }
-
-
+        return createdOrders
 }
 
 

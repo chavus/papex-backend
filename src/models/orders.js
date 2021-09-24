@@ -39,9 +39,13 @@ const orderSchema = new mongoose.Schema({
         enum:['Pickup', 'Delivery'],
         required: true,
         trim: true        
+    },
+    deliveryCost:{
+        type:Number
+    },
+    total:{
+        type:Number
     }
-
-    
 }
 , {timestamps: true} )   
 
