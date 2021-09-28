@@ -53,7 +53,8 @@ async function createMultipleOrders (shoppingcart)   ///  {}
             price : 5.50, 
             qty : 1 , 
             client: "1",
-            deliveryMethod: "Delivery/Pickup"
+            deliveryMethod: "Delivery/Pickup",
+            comment: "Some string"
         }   ]  
         */  
         let idParentOrder = await getNextOrder()
@@ -95,8 +96,9 @@ async function createMultipleOrders (shoppingcart)   ///  {}
                             "status"   : "En proceso", 
                             "parentOrder" : idParentOrder,
                             "products" :  productsArray,
-                            "deliveryMethod" : shoppingcart[index].deliveryMethod,                                                                              "deliveryCost": shoppingcart[index].deliveryMethod == "Delivery" ? DELIVERY_COST : 0,        
-                            "total": shoppingcart[index].deliveryMethod == "Delivery" ? total + DELIVERY_COST : total
+                            "deliveryMethod" : shoppingcart[index].deliveryMethod,                                                                           "deliveryCost": shoppingcart[index].deliveryMethod == "Delivery" ? DELIVERY_COST : 0,        
+                            "total": shoppingcart[index].deliveryMethod == "Delivery" ? total + DELIVERY_COST : total,
+                            "comment": shoppingcart[index].comment
                             }})
 
         //console.log (orderPerBusiness)
