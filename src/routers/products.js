@@ -66,7 +66,7 @@ router.get('/:id', async (request, response) => {
 
 
 
-router.post('/', async (request, response) => {
+router.post('/', isAuth, async (request, response) => {
     try {
       const newProduct = request.body
       const productCreated = await products.create(newProduct)  
@@ -88,7 +88,7 @@ router.post('/', async (request, response) => {
   })
   
 
-  router.delete('/:id', async (request, response) => {
+  router.delete('/:id', isAuth, async (request, response) => {
     try {
       const { id } = request.params
       const productDeleted = await products.deleteById(id)  
@@ -109,7 +109,7 @@ router.post('/', async (request, response) => {
   })
 
   
-  router.patch('/:id', async (request, response) => {
+  router.patch('/:id', isAuth, async (request, response) => {
     try 
     {
       const { id } = request.params

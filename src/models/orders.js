@@ -45,7 +45,11 @@ const orderSchema = new mongoose.Schema({
     },
     total:{
         type:Number
-    }
+    },
+    comment: {
+        type: String,
+        trim: true
+    } 
 }
 , {timestamps: true} )   
 
