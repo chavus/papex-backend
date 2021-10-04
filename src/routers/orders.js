@@ -99,6 +99,28 @@ router.post('/multipleorders', async (request, response) => {
   }
 })
 
+router.post('/siblingsOrders', async (request, response)=>{
+
+  const ordersData = request.body
+  try{
+    const ordenesCreadas = await orders.createSiblingsOrders(ordersData)  
+    response.json({
+    success: true,
+    message: 'Ordenes hermanas creadas',
+    data: ordenesCreadas
+  })
+  } 
+  catch (error) {
+    response.status(400)
+    response.json({
+    success: false,
+    message: 'Error al crear ordenes hermanas',
+    data: error.message
+  })
+  }
+
+})
+
 router.post('/create-checkout-session', async (request, response) => {
 
   const checkout_data = request.body
@@ -124,8 +146,8 @@ router.post('/create-checkout-session', async (request, response) => {
         'card',
       ],
       mode: 'payment',
-      success_url: `${checkout_data.domain}?success=true`,
-      cancel_url: `${checkout_data.domain}?canceled=true`,
+      success_url: `${checkout_data.domain}?status=success`,
+      cancel_url: `${checkout_data.domain}?status=cancelled`,
     });
   
     response.json({

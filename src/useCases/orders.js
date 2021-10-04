@@ -21,8 +21,9 @@ function create(order)
     // confirmation_code format: 
         //date[last six] + "papex" + parentorder
     const confirmation_code = `${Date.now().toString().slice(-5)}PAPEX${order.parentOrder}`
+    const status = "En proceso"
     return Order.create({...order,
-        confirmation_code})
+        confirmation_code, status})
 }
 
 function updateById(id, newData)
@@ -41,6 +42,20 @@ async function getNextOrder()
 
 }
 
+async function createSiblingsOrders(shoppingCart){
+    //Creates orders with the same parent Order
+
+    const idParentOrder = await getNextOrder()
+
+    let createdOrders = []
+    for ( const order of shoppingCart )
+    {
+         const res = await create({...order, parentOrder: idParentOrder})
+         console.log(res)
+         createdOrders.push(res)
+    }
+    return createdOrders
+}
 
 async function createMultipleOrders (shoppingcart)   ///  {}
 {
@@ -114,6 +129,7 @@ async function createMultipleOrders (shoppingcart)   ///  {}
 
 
 
+
 module.exports = {
     getAll, 
     getById,
@@ -121,6 +137,7 @@ module.exports = {
     create,
     updateById,
     getNextOrder,
+    createSiblingsOrders,
     createMultipleOrders
 }
 
